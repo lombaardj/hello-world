@@ -36,6 +36,10 @@ for root in "${existing_roots[@]}"; do
     done
 done > "$temp_file"
 
+# Print column headers
+printf "%-23s %-25s %-15s %-15s\n" "DateTime" "GitHub Username" "Hostname" "System User"
+printf "%-23s %-25s %-15s %-15s\n" "--------" "---------------" "--------" "-----------"
+
 # Sort by datetime descending, then by username to get unique entries, then sort by datetime descending again
 sort -t'|' -k1,1r -k2,2 "$temp_file" | awk -F'|' '!seen[$2]++ {print $0}' | sort -t'|' -k1,1r | while IFS='|' read -r datetime username hostname user; do
     printf "%-23s %-25s %-15s %-15s\n" "$datetime" "$username" "$hostname" "$user"
